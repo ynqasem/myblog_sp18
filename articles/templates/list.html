@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+	List
+{% endblock title %}
+
+{% block content %}
+	<div class="row">
+		{% for article in articles %}
+			<div class="col-sm-6">
+				<div class="card">
+				  <div class="card-body">
+				    <h5 class="card-title">{{article.title}}</h5>
+				    <h6 class="card-subtitle mb-2 text-muted"> written by: {{article.author}}</h6>
+				    <p class="card-text">{{article.content}}</p>
+				    <p class="card-text">{{article.created|timesince}}</p>
+				    <a href="{% url 'article-update' article_id=article.id %}" class="btn btn-outline-info">Update</a>
+				    <a href="{% url 'article-delete' article_id=article.id %}" class="btn btn-outline-danger">Delete</a>
+				  </div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock content %}
