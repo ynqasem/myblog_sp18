@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404, HttpResponse
 from .models import Article, Like
 from .forms import ArticleForm, UserRegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
@@ -60,6 +60,8 @@ def user_login(request):
 	return render(request, 'login.html', context)
 
 def article_list(request):
+	if request.user.is_anonymous:
+		return redirect('login')
 	object_list = Article.objects.all()
 	object_list = object_list.order_by('created', 'title')
 	query = request.GET.get('q')
@@ -92,7 +94,14 @@ def article_create(request):
 	return render(request, 'create.html', context)
 
 def article_update(request, article_id):
+
 	article = Article.objects.get(id=article_id)
+
+	if not(request.user.is_staff or request.user==article.author):
+		# raise Http404
+		# return redirect("some page")
+		return HttpResponse("<h1>Hahaaa you can't do this!</h1>")
+
 	form = ArticleForm(instance=article)
 	if request.method == "POST":
 		form = ArticleForm(request.POST, instance=article)
