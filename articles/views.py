@@ -66,7 +66,7 @@ def article_list(request):
 	object_list = object_list.order_by('created', 'title')
 	query = request.GET.get('q')
 	if query:
-		object_list = object_list.filter(title__contains=query)
+		object_list = object_list.filter(author__username__icontains=query)
 
 	liked_articles = []
 	likes = request.user.like_set.all()

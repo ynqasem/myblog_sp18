@@ -7,7 +7,7 @@ class Article(models.Model):
 	image = models.ImageField(null=True)
 	created = models.DateTimeField(auto_now_add=True)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
-	publish_date = models.DateField()
+	publish_date = models.DateField(auto_now=True)
 
 	def __str__(self):
 		return self.title
